@@ -14,17 +14,15 @@
 
   <main>
     <section class="questao">
-      <h2>Questão 1: Conversão para Escala de Cinza</h2>
-      <p>O código abaixo converte uma imagem colorida para escala de cinza:</p>
+      <h2>Questão 1: Manipulando pixels em uma imagem</h2>
+      <p>O programa inicial solicita ao usuário as coordenadas e captura o negativo da área retangular. O algoritmo converte a imagem em tons de cinza e, para cada pixel na região, calcula 255 menos o valor do pixel:</p>
       <pre><code>
-import cv2
-img = cv2.imread('imagem.jpg')
-cinza = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-cv2.imshow('Cinza', cinza)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+        # Invert img operation
+        for i in range(start_point[0], end_point[0]):
+        for j in range(start_point[1], end_point[1]):
+        img[j][i] = 255 - img[j][i]
       </code></pre>
-      <img src="imagens/imagem_exemplo.jpg" alt="Imagem original e em escala de cinza" />
+      <img src="imagens/inverted_chihiro.jpg" alt="Imagem invertida" />
     </section>
 
     <!-- Você pode duplicar a section acima para novas questões -->
