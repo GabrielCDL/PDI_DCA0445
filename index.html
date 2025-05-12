@@ -14,7 +14,7 @@
 
   <main>
     <section class="questao">
-      <h2>Questão 1: Manipulando pixels em uma imagem</h2>
+      <h2>Questão 1.1: Manipulando pixels em uma imagem</h2>
       <p>O programa inicial solicita ao usuário as coordenadas e captura o negativo da área retangular. O algoritmo converte a imagem em tons de cinza e, para cada pixel na região, calcula 255 menos o valor do pixel:</p>
       <pre><code>
         # Invert img operation
@@ -25,7 +25,29 @@
       <img src="imagens/inverted_chihiro.jpg" alt="Imagem invertida" />
     </section>
 
-    <!-- Você pode duplicar a section acima para novas questões -->
+    <section class="questao">
+        <h2>Questão 1.2: Troca de regiões</h2>
+        <p>Este código particiona a imagem em quatro quadrantes e troca suas respectivas regiões:</p>
+        <pre><code>
+            rows, cols = img.shape[:2]
+
+            # Getting quadrant img
+            quad_1 = img[0:rows//2, 0:cols//2]
+            quad_2 = img[0:rows//2, cols//2:cols]
+            quad_3 = img[rows//2:rows, 0:cols//2]
+            quad_4 = img[rows//2:rows, cols//2:cols]
+            
+            new_img = np.empty_like(img)
+            
+            # Realocating quadrants in new image
+            new_img[0:rows//2, 0:cols//2] = quad_4
+            new_img[rows//2:rows, cols//2:cols] = quad_1
+            new_img[rows//2:rows, 0:cols//2] = quad_2
+            new_img[0:rows//2, cols//2:cols] = quad_3
+        </code></pre>
+        <img src="imagens/totoro.jpg" alt="Antes da troca de regiões" />
+        <img src="imagens/swapped_totoro.jpg" alt="Depois da troca de regiões" />
+      </section>
   </main>
 
   <footer>
