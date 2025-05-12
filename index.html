@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Site de PDI</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Processamento Digital de Imagens</h1>
+    <p>Questões, códigos e figuras explicativas</p>
+  </header>
+
+  <main>
+    <section class="questao">
+      <h2>Questão 1: Conversão para Escala de Cinza</h2>
+      <p>O código abaixo converte uma imagem colorida para escala de cinza:</p>
+      <pre><code>
+import cv2
+img = cv2.imread('imagem.jpg')
+cinza = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+cv2.imshow('Cinza', cinza)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+      </code></pre>
+      <img src="imagens/imagem_exemplo.jpg" alt="Imagem original e em escala de cinza" />
+    </section>
+
+    <!-- Você pode duplicar a section acima para novas questões -->
+  </main>
+
+  <footer>
+    <p>&copy; 2025 - Gabriel CDL | PDI - DCA0445</p>
+  </footer>
+</body>
+</html>
