@@ -276,6 +276,45 @@
     </section>
 
     <section class="questao">
+        <h2>Questão 2.3: Quantização vetorial com k-means</h2>
+        <p>Nesse exemplo, é pedido para ser feito a implementação de um programa exemplo em que a execução do código se dê usando o parâmetro nRodadas=1 e iniciar os centróides de forma aleatória trocando KMEANS_PP_CENTERS por KMEANS_RANDOM_CENTERS. Ao final, realizasse a execução do algoritmo em 10 rodadas diferentes afim de comparar as imagens produzidas.</p>
+        <p>Durante a implementação foi realizada a troca do parâmetro KMEANS_PP_CENTERS para KMEANS_RANDOM_CENTERS e nRodadas para 1. Em seguida, para as 10 rodadas diferentes, foi feito um for englobando todo o código, indo de 0 a 9, de forma a otimizar a geração das imagens. Por fim, com as imagens geradas, foi transformadas as fotos em .gif para melhor comparação.</p>
+        <pre><code>
+          import cv2
+import numpy as np
+
+nClusters = 8
+nRodadas = 1
+
+img = cv2.imread(r'unidade 02\kmeans\img\sushi.jpg', cv2.IMREAD_COLOR)
+
+if img is None:
+    print("Erro ao abrir imagem")
+    exit()
+
+for i in range(10):
+    samples = img.reshape(-1, 3).astype(np.float32)
+
+    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10000, 0.0001)
+    _, labels, centers = cv2.kmeans(samples, nClusters, None, criteria, nRodadas, cv2.KMEANS_RANDOM_CENTERS)
+
+    labels = labels.reshape(img.shape[:2])
+    rotulada = np.zeros_like(img)
+
+    for y in range(img.shape[0]):
+        for x in range(img.shape[1]):
+            indice = labels[y, x]
+            rotulada[y, x] = centers[indice]
+
+    cv2.imwrite("sushi_clusterizado_{}.png".format(i), rotulada)
+
+        </code></pre>
+        <p>Saídas:</p>
+        <img src="imagens/edges_detected.png" alt="img2" />
+        <img src="imagens/ponyo_pointillism.png" alt="img3" />
+    </section>
+
+    <section class="questao">
         <h2>Questão 2.2: Canny e a arte com pontilhismo</h2>
         <p>O algoritmo de Canny é amplamente utilizado em processamento de imagens e visão artificial para detecção de bordas, o que pode melhorar algoritmos de segmentação automática ou para encontrar objetos em cenas e pontos de interesse. No entanto, nesta lição, o objetivo é usar o algoritmo para desenvolver arte digital. A proposta é utilizar uma imagem de referência para criar uma nova imagem com efeitos artísticos pontilhistas. Para tal exercício, foi utilizado a Figura como exemplo:</p>
         <img src="imagens/ponyo.jpg" alt="img1" />
@@ -283,80 +322,34 @@
         <pre><code>
           import cv2
           import numpy as np
-          import random
 
-          STEP = 5
-          JITTER = 3
-          RAIO = 3
+          nClusters = 8
+          nRodadas = 1
 
-          top_slider = 10
-          top_slider_max = 200
+          img = cv2.imread(r'unidade 02\kmeans\img\sushi.jpg', cv2.IMREAD_COLOR)
 
-          def pointillism(image, border, points):
-              height, width = image.shape[:2]
-              x_indices = list(range(0, height, STEP))
-              y_indices = list(range(0, width, STEP))
-              random.shuffle(x_indices)
-              random.shuffle(y_indices)
-
-              for i in x_indices:
-                  for j in y_indices:
-                      if border[i, j] == 255:
-                          x = i + random.randint(-JITTER, JITTER + 1)
-                          y = j + random.randint(-JITTER, JITTER + 1)
-                          color = image[x, y]
-                          cv2.circle(points, (y, x), RAIO, (int(color[0]), int(color[1]), int(color[2])), -1, cv2.LINE_AA)
-                      else:
-                          x = i + random.randint(-JITTER, JITTER + 1)
-                          y = j + random.randint(-JITTER, JITTER + 1)
-                          color = image[x, y]
-                          cv2.circle(points, (y, x), 2, (int(color[0]), int(color[1]), int(color[2])), -1, cv2.LINE_AA)
-
-              cv2.imshow("cannypoints", points)
-
-          def on_trackbar_canny(value):
-              global border
-              _, thresholded = cv2.threshold(imageGray, value, 255, cv2.THRESH_BINARY)
-              border = cv2.Canny(thresholded, 30, 90)
-              pointillism(image, border, points)
-              cv2.imshow("canny", border)
-
-          def on_trackbar_cannypoints(value):
-              pointillism(image, border, points)
-
-          image = cv2.imread(r'unidade 02\canny_pontilhismo\img\ponyo.jpg', cv2.IMREAD_COLOR)
-          imageGray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-          points = image.copy()
-          border = np.zeros(imageGray.shape, dtype=np.uint8)
-
-          if image is None:
-              print("Erro ao abrir a imagem")
+          if img is None:
+              print("Erro ao abrir imagem")
               exit()
 
-          cv2.namedWindow("cannypoints", cv2.WINDOW_NORMAL)
-          cv2.createTrackbar("Threshold inferior", "cannypoints", top_slider, top_slider_max, on_trackbar_canny)
-          on_trackbar_canny(top_slider)
+          for i in range(10):
+              samples = img.reshape(-1, 3).astype(np.float32)
 
-          cv2.namedWindow("trackbars", cv2.WINDOW_NORMAL)
+              criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10000, 0.0001)
+              _, labels, centers = cv2.kmeans(samples, nClusters, None, criteria, nRodadas, cv2.KMEANS_RANDOM_CENTERS)
 
-          cv2.createTrackbar("STEP", "trackbars", STEP, 100, on_trackbar_cannypoints)
-          on_trackbar_cannypoints(STEP)
+              labels = labels.reshape(img.shape[:2])
+              rotulada = np.zeros_like(img)
 
-          cv2.createTrackbar("JITTER", "trackbars", JITTER, 100, on_trackbar_cannypoints)
-          on_trackbar_cannypoints(JITTER)
+              for y in range(img.shape[0]):
+                  for x in range(img.shape[1]):
+                      indice = labels[y, x]
+                      rotulada[y, x] = centers[indice]
 
-          cv2.createTrackbar("RAIO", "trackbars", RAIO, 100, on_trackbar_cannypoints)
-          on_trackbar_cannypoints(RAIO)
-
-          while True:
-              if cv2.waitKey(1) == 27:
-                  cv2.imwrite("edges_detected.png", border)
-                  cv2.imwrite("ponyo_pointillism.png", points)
-                  break
+              cv2.imwrite("sushi_clusterizado_{}.png".format(i), rotulada)
         </code></pre>
-        <p>Saídas:</p>
-        <img src="imagens/edges_detected.png" alt="img2" />
-        <img src="imagens/ponyo_pointillism.png" alt="img3" />
+        <p>Saída:</p>
+        <img src="imagens/sushi_clustered.gif" alt="img2" />
     </section>
   </main>
 
